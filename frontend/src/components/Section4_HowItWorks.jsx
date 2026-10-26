@@ -9,12 +9,11 @@ import {
   Layers,
   Sliders,
   ShieldAlert,
-  CheckCircle2,
-  AlertTriangle
+  ArrowRight
 } from 'lucide-react';
 
 export default function Section4_HowItWorks() {
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStage, setActiveStage] = useState(3);
 
   const scrollToNext = () => {
     const el = document.getElementById('sec-live-demo');
@@ -23,209 +22,194 @@ export default function Section4_HowItWorks() {
     }
   };
 
-  const steps = [
+  const stages = [
     {
-      num: '1',
-      title: 'URL Input',
-      summary: 'Arbitrary HTTP/HTTPS string entry',
-      description: 'The user enters any web address into the inspection console. The system trims whitespace, enforces max character limits, and verifies scheme formatting without making any external calls.',
-      icon: <FormInput className="w-5 h-5 text-cyan-400" />,
-      tag: 'Step 1: Input Validation',
+      num: '01',
+      title: 'URL INPUT',
+      metric: 'String Entry',
+      desc: 'Takes any arbitrary HTTP/HTTPS URL string. Validates schemes, strips whitespace, and enforces 4,096 character safety ceilings without making external network connections.',
     },
     {
-      num: '2',
-      title: 'URL Parsing',
-      summary: 'Deconstruct with urllib.parse.urlsplit',
-      description: 'Splits the URL into canonical RFC 3986 components: scheme, netloc, hostname, port, path, and query strings. Separates authority credentials from host and isolates parameters safely.',
-      icon: <Split className="w-5 h-5 text-blue-400" />,
-      tag: 'Step 2: Component Separation',
+      num: '02',
+      title: 'URL PARSING',
+      metric: 'urllib.parse.urlsplit',
+      desc: 'Deconstructs the target into RFC 3986 components: scheme, netloc, hostname, port, path, and query strings. Disentangles embedded credentials and parameters from true destination servers.',
     },
     {
-      num: '3',
-      title: 'Feature Extraction',
-      summary: 'Syntactic & architectural profiling',
-      description: 'Extracts critical structural parameters: length, raw IP literals (via Python ipaddress), subdomain depth, userinfo disguise presence, non-standard ports, and percent-encoding counts.',
-      icon: <Cpu className="w-5 h-5 text-indigo-400" />,
-      tag: 'Step 3: Signal Profiling',
+      num: '03',
+      title: 'FEATURE EXTRACTION',
+      metric: 'Syntactic Profiling',
+      desc: 'Extracts 15+ architectural features: total string length, raw IPv4/IPv6 detection (via Python ipaddress), subdomain depth counts, userinfo disguise presence, and custom port mappings.',
     },
     {
-      num: '4',
-      title: 'Rule-Based Scoring',
-      summary: 'Weighted, transparent heuristic evaluation',
-      description: 'Evaluates matching rules. High-impact structural red flags (such as raw IP hosts) carry heavier weight (+40 pts) than weak keyword indicators. The score is capped between 0 and 100.',
-      icon: <Award className="w-5 h-5 text-amber-400" />,
-      tag: 'Step 4: Heuristic Calculation',
+      num: '04',
+      title: 'RULE-BASED SCORING',
+      metric: 'Weighted Math',
+      desc: 'Applies predefined deterministic heuristics. Severe structural anomalies like raw IP hosts (+40) receive high point weights; weak indicators like path keywords receive minor weights. Clamped between 0 and 100.',
     },
     {
-      num: '5',
-      title: 'Explainable Results',
-      summary: 'Risk tier, reasons & safety guidance',
-      description: 'Outputs a clear estimated risk tier (LOW, MEDIUM, HIGH) with full plain-English explanations. Displays which indicators were triggered and verifies which security checks passed.',
-      icon: <LayoutDashboard className="w-5 h-5 text-emerald-400" />,
-      tag: 'Step 5: Output & Explanation',
+      num: '05',
+      title: 'EXPLAINABLE RESULTS',
+      metric: 'Full Transparency',
+      desc: 'Maps the score into LOW RISK (0-29), MEDIUM RISK (30-64), or HIGH RISK (65-100). Explains the exact cybersecurity rationale for every triggered penalty and reveals all passed checks.',
     },
   ];
 
-  const ruleExamples = [
-    { name: 'Raw IP Hostname', weight: '+40 pts', severity: 'High', reason: 'Direct IP usage evades domain-level reputation and takedown systems.' },
-    { name: 'Userinfo Disguise (@)', weight: '+35 pts', severity: 'High', reason: 'Embeds recognizable brand before @ to trick users on the destination host.' },
-    { name: 'Brand Mimicry', weight: '+30 pts', severity: 'High', reason: 'Targets brand names in subdomains of a different apex domain.' },
-    { name: 'Unencrypted HTTP', weight: '+15 pts', severity: 'Medium', reason: 'Plaintext transport lacks encryption for authentication credentials.' },
-    { name: 'Excessive Subdomains', weight: '+15 pts', severity: 'Medium', reason: 'Deep nesting (4+ labels) conceals the true root domain.' },
-    { name: 'Non-Standard Port', weight: '+15 pts', severity: 'Medium', reason: 'Custom ports (e.g. 8080) frequently host ad-hoc or evasive rigs.' },
+  const actualRules = [
+    { name: 'Raw IP Hostname', weight: '+40 PTS', level: 'HIGH SEVERITY', reason: 'Direct IP bypasses domain-level reputation feeds and rapid DNS takedowns.' },
+    { name: 'Userinfo Disguise (@)', weight: '+35 PTS', level: 'HIGH SEVERITY', reason: 'Prefixes recognized brand before @ to deceive victims on the true destination host.' },
+    { name: 'Brand Mimicry', weight: '+30 PTS', level: 'HIGH SEVERITY', reason: 'Places target brand names in subdomains of a third-party apex domain.' },
+    { name: 'Unencrypted HTTP', weight: '+15 PTS', level: 'MEDIUM SEVERITY', reason: 'Lacks cryptographic transit security for authentication credentials.' },
+    { name: 'Deep Subdomain Hierarchy', weight: '+15 PTS', level: 'MEDIUM SEVERITY', reason: 'Excessive labels (4+) intentionally push the true root domain off-screen.' },
+    { name: 'Non-Standard Web Port', weight: '+15 PTS', level: 'MEDIUM SEVERITY', reason: 'Custom ports (e.g. 8080, 8443) frequently host ad-hoc or evasive phishing rigs.' },
   ];
 
   return (
-    <section id="sec-how-it-works" className="py-20 border-b border-slate-800/80 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full glass-panel border border-amber-500/30 text-xs text-amber-300 mb-4">
-            <span className="font-mono font-bold text-amber-400">04</span>
-            <span className="text-slate-600">•</span>
-            <span className="uppercase tracking-wider font-semibold">Heuristic Architecture</span>
+    <section id="sec-how-it-works" className="py-28 px-4 sm:px-8 bg-[#0a0a10] border-b border-white/10 relative">
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header Meta */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 font-mono text-xs text-white/50 uppercase tracking-widest">
+          <div className="flex items-center space-x-2">
+            <span className="text-[#a855f7]">04</span>
+            <span>// DETECTION PIPELINE</span>
           </div>
+          <span className="text-white/30">DETERMINISTIC HEURISTICS</span>
+        </div>
 
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            How Does Our Detector Work?
+        {/* Monumental Section Title */}
+        <div className="mb-14">
+          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight leading-none mb-6">
+            How Our <br />
+            <span className="text-[#a855f7] font-serif italic tracking-normal">Detector Works</span>
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg mt-3">
-            A transparent 5-step pipeline that maps URL characteristics to weighted risk points.
+          <p className="text-lg sm:text-xl text-white/60 max-w-2xl font-light">
+            A deterministic 5-stage pipeline transforming raw URL syntax into explainable risk indicators.
           </p>
         </div>
 
-        {/* Editorial Presentation Content Panel (No Speaker Notes label!) */}
-        <div className="rounded-3xl glass-panel border border-amber-500/30 p-8 sm:p-12 shadow-2xl mb-12">
-          <div className="max-w-3xl mx-auto space-y-6 text-slate-200 text-lg sm:text-xl leading-relaxed">
-            <p className="text-xl sm:text-2xl font-semibold text-white leading-snug">
+        {/* Presentation Speech Text Panel (Editorial format, no speaker notes label) */}
+        <div className="rounded-3xl bg-[#120f1c] border border-white/15 p-8 sm:p-14 mb-16 shadow-2xl">
+          <div className="max-w-4xl space-y-6 text-white text-lg sm:text-2xl leading-relaxed font-light">
+            <p className="text-2xl sm:text-3xl font-bold text-white leading-snug">
               Our project follows three main steps.
             </p>
 
-            <p>
+            <p className="text-white/80">
               First, we take a URL as input.
             </p>
 
-            <p>
+            <p className="text-white/80">
               Second, we extract useful features, such as the URL's length, whether its hostname is an IP address, whether it contains suspicious subdomains, and whether it uses unusual patterns.
             </p>
 
-            <p>
+            <p className="text-white/80">
               Third, we apply a set of predefined rules.
             </p>
 
-            <p>
+            <p className="text-white/80">
               Each rule contributes to a risk score. For example, a URL containing a raw IP address might receive additional points. A URL with several suspicious characteristics may receive a higher score.
             </p>
 
-            <p>
+            <p className="text-white/80">
               Finally, the program displays the risk level along with the specific indicators that triggered the warnings.
             </p>
 
-            <div className="p-6 rounded-2xl bg-[#14101e]/90 border border-amber-500/30 text-amber-100 font-medium text-base sm:text-lg leading-relaxed shadow-inner">
+            <div className="p-6 rounded-2xl bg-black/80 border-l-4 border-[#a855f7] text-white text-xl italic font-serif leading-relaxed">
               "This makes our system easier to understand because it explains why a URL received its score."
             </div>
           </div>
         </div>
 
-        {/* 3D Interactive 5-Step Pipeline */}
-        <div className="rounded-3xl glass-panel-3d border border-slate-700/80 p-6 sm:p-10 shadow-2xl mb-12">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
-            <div className="flex items-center space-x-2">
-              <Sliders className="w-5 h-5 text-cyan-400" />
-              <h3 className="text-base font-bold uppercase tracking-wider text-white">
-                Interactive 5-Step Pipeline
-              </h3>
-            </div>
-            <span className="text-xs text-slate-400 font-mono">
-              Click any step to reveal its execution details
-            </span>
+        {/* Dimensional Pipeline Data-Flow */}
+        <div className="rounded-3xl bg-[#06060b] border border-white/20 p-6 sm:p-12 shadow-[0_30px_90px_rgba(0,0,0,0.9)] mb-14">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10 font-mono text-xs uppercase tracking-wider text-white/50">
+            <span className="text-[#a855f7] font-bold">5-STAGE DATA-FLOW VISUALIZATION</span>
+            <span>CLICK TO INSPECT TRANSFORMATION</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
-            {steps.map((st, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-8">
+            {stages.map((st, idx) => (
               <button
                 key={idx}
                 type="button"
-                onClick={() => setActiveStep(idx)}
-                className={`p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer ${
-                  activeStep === idx
-                    ? 'bg-gradient-to-b from-[#0f1d3a] to-[#081226] border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.35)] scale-105'
-                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900/90'
+                onClick={() => setActiveStage(idx)}
+                className={`p-5 rounded-2xl border text-left transition-all duration-300 font-mono cursor-pointer ${
+                  activeStage === idx
+                    ? 'bg-[#a855f7] text-black border-[#a855f7] shadow-[0_0_25px_rgba(168,85,247,0.5)] scale-105'
+                    : 'bg-[#0f0f18] text-white border-white/10 hover:border-white/30'
                 }`}
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono font-bold text-slate-500">0{st.num}</span>
-                  <div className="p-1.5 rounded-lg bg-slate-950/80 border border-slate-800">{st.icon}</div>
+                <div className="flex items-center justify-between mb-3 text-xs opacity-60">
+                  <span>{st.num}</span>
+                  <span>STAGE</span>
                 </div>
-                <div className="text-xs sm:text-sm font-bold text-white truncate">{st.title}</div>
+                <div className="font-black text-sm uppercase leading-tight mb-1">{st.title}</div>
+                <div className="text-[10px] opacity-75 truncate">{st.metric}</div>
               </button>
             ))}
           </div>
 
-          {/* Active Step Dimensional Card */}
-          <div className="p-6 rounded-2xl glass-panel border border-cyan-500/40 shadow-xl">
-            <div className="flex items-center space-x-2 text-xs font-mono font-bold text-cyan-300 mb-2">
-              <span>{steps[activeStep].tag}</span>
+          {/* Active Stage Detail Panel */}
+          <div className="p-8 rounded-2xl bg-[#0e0e18] border border-[#a855f7]/40 shadow-2xl">
+            <div className="font-mono text-xs text-[#a855f7] font-bold uppercase tracking-widest mb-2">
+              ACTIVE STAGE // {stages[activeStage].num}: {stages[activeStage].title}
             </div>
-            <h4 className="text-lg font-bold text-white mb-2">
-              {steps[activeStep].title} — <span className="text-slate-300 font-normal">{steps[activeStep].summary}</span>
+            <h4 className="text-xl sm:text-2xl font-black text-white uppercase mb-3">
+              {stages[activeStage].metric}
             </h4>
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-light">
-              {steps[activeStep].description}
+            <p className="text-base sm:text-lg text-white/80 leading-relaxed font-light">
+              {stages[activeStage].desc}
             </p>
           </div>
         </div>
 
-        {/* 3D Scoring Rules Weight Matrix */}
-        <div className="rounded-3xl glass-panel border border-slate-800 p-6 sm:p-10 mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+        {/* Real Backend Scoring Rules Matrix */}
+        <div className="rounded-3xl bg-[#0e0e16] border border-white/15 p-6 sm:p-12 mb-14">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10">
             <div>
-              <h3 className="text-lg font-bold text-white">
-                Transparent Rule Weights & Contribution Logic
+              <h3 className="text-2xl font-black text-white uppercase tracking-tight">
+                Authentic Rule Weights
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Actual heuristic weights implemented in backend/detector.py
+              <p className="text-xs font-mono text-white/50 mt-1">
+                EXACT VALUES FROM BACKEND/DETECTOR.PY (MAX: 100 POINTS)
               </p>
             </div>
-            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-slate-900 text-cyan-300 border border-slate-700">
-              Max Score: 100 Points
+            <span className="font-mono text-xs px-3 py-1 rounded bg-[#a855f7]/20 border border-[#a855f7] text-[#a855f7] font-bold">
+              HEURISTIC MATRIX
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-            {ruleExamples.map((r, i) => (
-              <div
-                key={i}
-                className="p-4 rounded-2xl bg-[#060a16]/90 border border-slate-800/90 hover:border-slate-700 transition-all hover:-translate-y-0.5"
-              >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
+            {actualRules.map((rule, i) => (
+              <div key={i} className="p-5 rounded-2xl bg-black/60 border border-white/10 hover:border-[#a855f7] transition-all">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs sm:text-sm font-bold text-white">{r.name}</span>
-                  <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-950/80 px-2.5 py-0.5 rounded-full border border-cyan-800">
-                    {r.weight}
-                  </span>
+                  <span className="font-bold text-white uppercase">{rule.name}</span>
+                  <span className="text-[#a855f7] font-black">{rule.weight}</span>
                 </div>
-                <p className="text-xs text-slate-400 leading-relaxed">{r.reason}</p>
+                <div className="text-[10px] text-white/40 uppercase mb-2">{rule.level}</div>
+                <p className="text-white/70 font-sans text-xs leading-relaxed">{rule.reason}</p>
               </div>
             ))}
           </div>
 
-          {/* Threshold Tier Spectrum */}
-          <div className="mt-8 pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-            <span className="text-emerald-400 font-semibold">🟢 0 – 29: LOW RISK (Standard Patterns)</span>
-            <span className="text-amber-400 font-semibold">🟡 30 – 64: MEDIUM RISK (Moderate Anomalies)</span>
-            <span className="text-rose-400 font-semibold">🔴 65 – 100: HIGH RISK (Critical Red Flags)</span>
+          {/* Risk Classification Spectrum */}
+          <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+            <span className="text-[#ccff00]">● 00 - 29: LOW RISK (NORMAL SYNTAX)</span>
+            <span className="text-amber-400">● 30 - 64: MEDIUM RISK (STRUCTURAL ANOMALIES)</span>
+            <span className="text-[#ff2a5f]">● 65 - 100: HIGH RISK (CRITICAL RED FLAGS)</span>
           </div>
         </div>
 
-        {/* Next Section Transition Button */}
-        <div className="flex justify-center">
+        {/* Transition to Next Stage */}
+        <div className="flex items-center justify-between pt-6 border-t border-white/10 font-mono text-sm">
           <button
             onClick={scrollToNext}
-            className="flex items-center space-x-2 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm sm:text-base shadow-[0_8px_30px_rgba(6,182,212,0.4)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
+            className="group flex items-center space-x-3 px-8 py-4 rounded-full bg-[#ccff00] hover:bg-white text-black font-black uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(204,255,0,0.4)] hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <span>Proceed to Live Demonstration</span>
-            <ArrowDown className="w-4 h-4" />
+            <span>Proceed to Live Analysis</span>
+            <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
           </button>
+          <span className="text-xs text-white/40 font-mono hidden sm:inline">STAGE 04 / 06</span>
         </div>
       </div>
     </section>

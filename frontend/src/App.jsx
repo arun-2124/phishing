@@ -17,7 +17,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080d1a] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="min-h-screen bg-[#08080c] text-white flex flex-col font-sans selection:bg-[#ccff00] selection:text-black">
       <Navbar onAnalyzeClick={handleFocusAnalyzer} />
       <main className="flex-grow">
         <Section1_Introduction />

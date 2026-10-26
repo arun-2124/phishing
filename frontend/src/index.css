@@ -2,151 +2,162 @@
 
 :root {
   color-scheme: dark;
+  --bg-primary: #08080c;
+  --text-primary: #f2f2ee;
+  --accent-lime: #ccff00;
+  --accent-red: #ff2a5f;
+  --accent-blue: #2563eb;
+  --accent-cyan: #06b6d4;
+  --accent-violet: #a855f7;
 }
 
 body {
   margin: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: #040714;
-  color: #e2e8f0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   overflow-x: hidden;
   min-height: 100vh;
-  background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(30, 58, 138, 0.25), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 90% 40%, rgba(139, 92, 246, 0.08), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 10% 70%, rgba(6, 182, 212, 0.08), transparent 60%);
+  selection-background-color: #ccff00;
+  selection-color: #000000;
+}
+
+::selection {
+  background: #ccff00;
+  color: #000000;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #060a18;
+  background: #08080c;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
-  border: 2px solid #060a18;
+  background: #27272a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #ccff00;
 }
 
-/* 3D Perspective & Transform Utilities */
-.perspective-1000 {
-  perspective: 1000px;
+/* Fiddle-inspired brutalist-experimental utilities */
+.font-mono-tech {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: -0.03em;
 }
 
-.perspective-2000 {
-  perspective: 2000px;
+.bg-noise {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.text-acid {
+  color: #ccff00;
+}
+
+.bg-acid {
+  background-color: #ccff00;
+  color: #000000;
+}
+
+.border-acid {
+  border-color: #ccff00;
+}
+
+/* 3D Kinetic Sculpture Keyframes */
+@keyframes spinSculpture {
+  0% {
+    transform: rotateX(20deg) rotateY(0deg) rotateZ(0deg);
+  }
+  50% {
+    transform: rotateX(-15deg) rotateY(180deg) rotateZ(10deg);
+  }
+  100% {
+    transform: rotateX(20deg) rotateY(360deg) rotateZ(0deg);
+  }
+}
+
+@keyframes floatRune {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(3deg);
+  }
+}
+
+@keyframes ribbonFloat {
+  0%, 100% {
+    transform: translateY(0px) skewX(-2deg);
+  }
+  50% {
+    transform: translateY(-12px) skewX(3deg);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-spin-sculpture {
+  animation: spinSculpture 22s linear infinite;
+}
+
+.animate-float-rune {
+  animation: floatRune 6s ease-in-out infinite;
+}
+
+.animate-ribbon-float {
+  animation: ribbonFloat 7s ease-in-out infinite;
+}
+
+.animate-marquee {
+  display: flex;
+  width: 200%;
+  animation: marquee 20s linear infinite;
+}
+
+/* Perspective staging */
+.perspective-sculpture {
+  perspective: 1200px;
 }
 
 .preserve-3d {
   transform-style: preserve-3d;
 }
 
-.backface-hidden {
-  backface-visibility: hidden;
-}
-
-/* Glassmorphism & 3D Layering */
-.glass-panel {
-  background: rgba(11, 19, 43, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
-    0 20px 40px -15px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    0 1px 0 0 rgba(255, 255, 255, 0.1) inset;
-}
-
-.glass-panel-3d {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(10, 16, 32, 0.85) 100%);
+/* Experimental Glass & Brutalist Panels */
+.art-panel {
+  background: rgba(14, 14, 18, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(56, 189, 248, 0.15);
-  box-shadow: 
-    0 25px 50px -12px rgba(2, 6, 23, 0.8),
-    0 0 30px -10px rgba(6, 182, 212, 0.15),
-    0 1px 1px 0 rgba(255, 255, 255, 0.15) inset;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
 }
 
-.glass-panel-3d:hover {
-  border-color: rgba(56, 189, 248, 0.35);
-  box-shadow: 
-    0 30px 60px -15px rgba(2, 6, 23, 0.9),
-    0 0 40px -5px rgba(6, 182, 212, 0.25),
-    0 1px 2px 0 rgba(255, 255, 255, 0.25) inset;
-}
-
-/* 3D Floating Animations */
-@keyframes floatSlow {
-  0%, 100% {
-    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
-  }
-  50% {
-    transform: translateY(-12px) rotateX(2deg) rotateY(-2deg);
-  }
-}
-
-@keyframes floatReverse {
-  0%, 100% {
-    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
-  }
-  50% {
-    transform: translateY(10px) rotateX(-2deg) rotateY(2deg);
-  }
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-@keyframes ribbonSway {
-  0%, 100% {
-    transform: translateY(0) rotate(-2deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(1deg);
-  }
-}
-
-.animate-float-slow {
-  animation: floatSlow 7s ease-in-out infinite;
-}
-
-.animate-float-reverse {
-  animation: floatReverse 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 4s ease-in-out infinite;
-}
-
-.animate-ribbon {
-  animation: ribbonSway 8s ease-in-out infinite;
+.art-panel-highlight {
+  background: rgba(16, 16, 22, 0.85);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(204, 255, 0, 0.35);
+  box-shadow: 0 0 35px rgba(204, 255, 0, 0.15), 0 25px 60px rgba(0, 0, 0, 0.85);
 }
 
 /* Reduced motion accessibility */
 @media (prefers-reduced-motion: reduce) {
-  .animate-float-slow,
-  .animate-float-reverse,
-  .animate-pulse-glow,
-  .animate-ribbon {
+  .animate-spin-sculpture,
+  .animate-float-rune,
+  .animate-ribbon-float,
+  .animate-marquee {
     animation: none !important;
   }
 }

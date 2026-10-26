@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowDown, Compass, Globe, Lock, FileCode, SlidersHorizontal, CheckCircle2 } from 'lucide-react';
+import { ArrowDown, CornerDownRight, Crosshair, Layers, Terminal, Sparkles } from 'lucide-react';
 
 export default function Section2_WhatIsAnalysis() {
   const [activeComponent, setActiveComponent] = useState('hostname');
@@ -14,198 +14,181 @@ export default function Section2_WhatIsAnalysis() {
   const anatomyParts = [
     {
       id: 'scheme',
-      name: 'Scheme / Protocol',
-      example: 'https://',
-      accent: 'border-cyan-400 text-cyan-300 shadow-cyan-950/80',
-      glow: 'from-cyan-500/20 to-transparent',
-      tag: 'Transport Security',
-      role: 'Establishes the communication protocol (HTTP vs HTTPS).',
-      phishRisk: 'Phishers may use unencrypted HTTP for cheap disposable traps. However, modern attackers also obtain free SSL certificates to show the lock icon—proving encryption, but NOT identity!',
+      code: 'https://',
+      name: '01 // PROTOCOL SCHEME',
+      role: 'Defines transmission rules across the wire (HTTP vs HTTPS).',
+      phishRisk: 'Phishers exploit user assumptions: Free SSL certificates give phishing pages the green padlock. HTTPS guarantees encryption in transit, but NEVER guarantees ethical legitimacy.',
+      accent: '#06b6d4',
+      badge: 'CIPHER LAYER',
     },
     {
       id: 'hostname',
-      name: 'Hostname / Domain / IP',
-      example: 'secure.login.example.com',
-      accent: 'border-blue-400 text-blue-300 shadow-blue-950/80',
-      glow: 'from-blue-500/20 to-transparent',
-      tag: 'Authority Destination',
-      role: 'Determines the destination server receiving all user traffic and credentials.',
-      phishRisk: 'The prime deception vector: Attackers disguise hostnames using raw IP addresses (e.g. 192.0.2.10), deep nested subdomains (e.g. paypal.com.evil.com), typosquatting, or hyphenated brand mimicry.',
+      code: 'secure.login.bank-portal.com',
+      name: '02 // HOSTNAME & AUTHORITY',
+      role: 'Designates the physical or virtual destination server answering DNS.',
+      phishRisk: 'The prime deception battlefield. Phishers use raw IPv4 literals (192.0.2.10), deep multi-level subdomains, typosquatting (arnazon.com), or deceptive hyphen chains (paypal-verification-update.com).',
+      accent: '#ccff00',
+      badge: 'DNS IDENTITY',
     },
     {
       id: 'path',
-      name: 'Path',
-      example: '/account/verify',
-      accent: 'border-amber-400 text-amber-300 shadow-amber-950/80',
-      glow: 'from-amber-500/20 to-transparent',
-      tag: 'Resource Endpoint',
-      role: 'Identifies the specific route, script, or page resource on the host machine.',
-      phishRisk: 'Phishing URLs frequently copy legitimate paths like /login, /verification, /billing to visually reassure users who glance at the link.',
+      code: '/account/verify',
+      name: '03 // RESOURCE PATH',
+      role: 'Locates the exact endpoint, script, or directory structure on the server.',
+      phishRisk: 'Phishers emulate authentic brand directory layouts (/login, /recover-account, /2fa-auth) to instill false psychological confidence during a visual glance.',
+      accent: '#ff2a5f',
+      badge: 'URI ROUTE',
     },
     {
       id: 'query',
-      name: 'Query Parameters',
-      example: '?token=xyz&redirect=https://...',
-      accent: 'border-emerald-400 text-emerald-300 shadow-emerald-950/80',
-      glow: 'from-emerald-500/20 to-transparent',
-      tag: 'State & Payload Data',
-      role: 'Transmits key-value pairs following the "?" separator to backend handlers.',
-      phishRisk: 'Attackers pass encoded victim identifiers, malicious redirect destinations (Open Redirect attacks), or obfuscated tracking tokens.',
+      code: '?session=xyz&redirect=https://...',
+      name: '04 // QUERY PARAMETERS',
+      role: 'Key-value state variables passed to server-side scripts via the "?" delimiter.',
+      phishRisk: 'Used in Open Redirect exploits to route users away after harvesting, or to pass encoded victim email payloads to populate fake forms automatically.',
+      accent: '#3b82f6',
+      badge: 'VARIABLE PAYLOAD',
     },
   ];
 
-  const selectedPart = anatomyParts.find((p) => p.id === activeComponent) || anatomyParts[1];
+  const selected = anatomyParts.find((p) => p.id === activeComponent) || anatomyParts[1];
 
   return (
-    <section id="sec-what-is-analysis" className="py-20 border-b border-slate-800/80 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full glass-panel border border-blue-500/30 text-xs text-blue-300 mb-4">
-            <span className="font-mono font-bold text-blue-400">02</span>
-            <span className="text-slate-600">•</span>
-            <span className="uppercase tracking-wider font-semibold">Core Concept</span>
+    <section id="sec-what-is-analysis" className="py-28 px-4 sm:px-8 bg-[#0a0a0f] border-b border-white/10 relative">
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header Meta */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 font-mono text-xs text-white/50 uppercase tracking-widest">
+          <div className="flex items-center space-x-2">
+            <span className="text-[#ccff00]">02</span>
+            <span>// DEFINITION & ANATOMY</span>
           </div>
+          <span className="text-white/30">DECONSTRUCTION STAGE</span>
+        </div>
 
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            What is Phishing URL Analysis?
+        {/* Monumental Section Title */}
+        <div className="mb-14">
+          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight leading-none mb-6">
+            What is Phishing <br />
+            <span className="text-[#ccff00] font-serif italic tracking-normal">URL Analysis?</span>
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg mt-3">
-            Examining the anatomical layers of web addresses to detect manipulative patterns.
+          <p className="text-lg sm:text-xl text-white/60 max-w-2xl font-light">
+            Deconstructing the syntax of trust. How malicious actors manipulate standard RFC 3986 components.
           </p>
         </div>
 
-        {/* Editorial Presentation Content Panel (No Speaker Notes label!) */}
-        <div className="rounded-3xl glass-panel border border-blue-500/30 p-8 sm:p-12 shadow-2xl mb-12">
-          <div className="max-w-3xl mx-auto space-y-6 text-slate-200 text-lg sm:text-xl leading-relaxed">
-            <p className="text-xl sm:text-2xl font-semibold text-white leading-snug">
+        {/* Presentation Speech Text Panel (Editorial format, no speaker notes label) */}
+        <div className="rounded-3xl bg-[#0f0f16] border border-white/15 p-8 sm:p-14 mb-16 shadow-2xl">
+          <div className="max-w-4xl space-y-6 text-white text-lg sm:text-2xl leading-relaxed font-light">
+            <p className="text-2xl sm:text-3xl font-bold text-white leading-snug">
               Phishing URL analysis is the process of examining a web address to identify characteristics that may indicate a phishing attempt.
             </p>
 
-            <p>
+            <p className="text-white/80">
               A suspicious URL might contain an unfamiliar domain, an IP address instead of a domain name, an unusually long address, or misleading subdomains.
             </p>
 
-            <div className="p-6 rounded-2xl bg-[#091122]/90 border border-blue-500/30 text-blue-100 font-medium text-base sm:text-lg leading-relaxed shadow-inner">
+            <div className="p-6 rounded-2xl bg-black/80 border-l-4 border-[#ccff00] text-white text-xl italic font-serif leading-relaxed">
               "However, a suspicious-looking URL is not automatically malicious. We use these indicators to estimate risk, not to make a guaranteed decision."
             </div>
           </div>
         </div>
 
-        {/* 3D Layered Interactive URL Anatomy Component */}
-        <div className="rounded-3xl glass-panel-3d border border-slate-700/80 p-6 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.7)] mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 pb-4 border-b border-slate-800">
-            <div className="flex items-center space-x-2.5">
-              <Compass className="w-5 h-5 text-cyan-400" />
-              <h3 className="text-base font-bold uppercase tracking-wider text-white">
-                3D Interactive URL Anatomy Decomposition
-              </h3>
+        {/* Interactive URL Anatomy as Digital Art */}
+        <div className="rounded-3xl bg-[#060609] border border-white/20 p-6 sm:p-12 shadow-[0_30px_90px_rgba(0,0,0,0.9)] mb-14 relative overflow-hidden">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10 font-mono text-xs uppercase tracking-wider text-white/50">
+            <div className="flex items-center space-x-2">
+              <Crosshair className="w-4 h-4 text-[#ccff00]" />
+              <span className="text-white font-bold">DIGITAL ARTWORK // EXPLODED SYNTAX</span>
             </div>
-            <span className="text-xs text-slate-400 font-mono">
-              Click any colored segment to inspect its security relevance
-            </span>
+            <span className="text-[#ccff00]">SELECT AN ANATOMICAL LAYER</span>
           </div>
 
-          {/* 3D Elevated Ribbon Bar */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-[#030712] border border-slate-800/90 shadow-2xl mb-8 overflow-x-auto">
-            <div className="text-[11px] font-mono text-slate-500 mb-2 uppercase tracking-wider">
-              Anatomy Target:
+          {/* Sculpture-Like Kinetic URL Ribbon */}
+          <div className="p-6 rounded-2xl bg-[#0c0c14] border border-white/10 mb-8 overflow-x-auto shadow-inner">
+            <div className="font-mono text-[10px] text-white/40 mb-3 uppercase tracking-widest">
+              ACTIVE SPECIMEN:
             </div>
-            <div className="flex items-center font-mono text-sm sm:text-lg whitespace-nowrap gap-1">
-              <button
-                type="button"
-                onClick={() => setActiveComponent('scheme')}
-                className={`px-3 py-2 rounded-xl transition-all duration-300 cursor-pointer ${
-                  activeComponent === 'scheme'
-                    ? 'bg-cyan-500/30 text-cyan-300 ring-2 ring-cyan-400 font-bold scale-105 shadow-[0_0_15px_rgba(6,182,212,0.4)]'
-                    : 'text-cyan-400 hover:bg-slate-900'
-                }`}
-              >
-                https://
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveComponent('hostname')}
-                className={`px-3 py-2 rounded-xl transition-all duration-300 cursor-pointer ${
-                  activeComponent === 'hostname'
-                    ? 'bg-blue-500/30 text-blue-300 ring-2 ring-blue-400 font-bold scale-105 shadow-[0_0_15px_rgba(59,130,246,0.4)]'
-                    : 'text-blue-400 hover:bg-slate-900'
-                }`}
-              >
-                secure.login.example.com
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveComponent('path')}
-                className={`px-3 py-2 rounded-xl transition-all duration-300 cursor-pointer ${
-                  activeComponent === 'path'
-                    ? 'bg-amber-500/30 text-amber-300 ring-2 ring-amber-400 font-bold scale-105 shadow-[0_0_15px_rgba(245,158,11,0.4)]'
-                    : 'text-amber-400 hover:bg-slate-900'
-                }`}
-              >
-                /account/verify
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveComponent('query')}
-                className={`px-3 py-2 rounded-xl transition-all duration-300 cursor-pointer ${
-                  activeComponent === 'query'
-                    ? 'bg-emerald-500/30 text-emerald-300 ring-2 ring-emerald-400 font-bold scale-105 shadow-[0_0_15px_rgba(16,185,129,0.4)]'
-                    : 'text-emerald-400 hover:bg-slate-900'
-                }`}
-              >
-                ?token=xyz&redirect=https://...
-              </button>
+            <div className="flex items-center font-mono text-lg sm:text-2xl lg:text-3xl font-black whitespace-nowrap gap-2">
+              {anatomyParts.map((part) => {
+                const isSelected = activeComponent === part.id;
+                return (
+                  <button
+                    key={part.id}
+                    onClick={() => setActiveComponent(part.id)}
+                    style={{
+                      borderColor: isSelected ? part.accent : 'transparent',
+                      color: isSelected ? '#000000' : part.accent,
+                      backgroundColor: isSelected ? part.accent : 'transparent',
+                    }}
+                    className={`px-3 py-2 rounded-xl transition-all duration-300 font-mono tracking-tight cursor-pointer ${
+                      isSelected
+                        ? 'scale-105 shadow-[0_0_25px_rgba(255,255,255,0.4)]'
+                        : 'hover:bg-white/5 border border-dashed border-white/10'
+                    }`}
+                  >
+                    {part.code}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* 3D Depth Card for Selected Component */}
-          <div className="relative rounded-2xl glass-panel p-6 sm:p-8 border border-slate-700/80 shadow-2xl overflow-hidden transition-all duration-500">
-            <div className={`absolute top-0 left-0 h-1 w-full bg-gradient-to-r ${selectedPart.glow}`} />
-
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          {/* Selected Component Art Card */}
+          <div
+            className="p-8 sm:p-10 rounded-2xl bg-[#0e0e16] border transition-all duration-500 shadow-2xl relative"
+            style={{ borderColor: selected.accent }}
+          >
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
               <div className="flex items-center space-x-3">
-                <span className="text-lg sm:text-xl font-bold text-white">{selectedPart.name}</span>
-                <span className="text-xs font-mono px-3 py-1 rounded-full bg-slate-900 text-slate-300 border border-slate-700 font-semibold">
-                  {selectedPart.example}
+                <span className="font-mono text-sm sm:text-base font-black uppercase text-white">
+                  {selected.name}
+                </span>
+                <span
+                  style={{ color: selected.accent, borderColor: selected.accent }}
+                  className="font-mono text-xs px-3 py-0.5 rounded-full border bg-black/60 uppercase font-bold"
+                >
+                  {selected.badge}
                 </span>
               </div>
-              <span className="text-xs font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-950/80 text-blue-300 border border-blue-800">
-                {selectedPart.tag}
+              <span className="font-mono text-xs text-white/40">
+                LITERAL VALUE: <code className="text-white font-bold">{selected.code}</code>
               </span>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">
-                  Standard Web Protocol Role:
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-white">
+              <div className="space-y-2">
+                <span className="font-mono text-xs uppercase tracking-wider text-white/40 block">
+                  RFC Standard Architectural Function:
                 </span>
-                <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-normal">
-                  {selectedPart.role}
+                <p className="text-base sm:text-lg font-light leading-relaxed text-white/90">
+                  {selected.role}
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-[#050a16] border border-cyan-500/30 shadow-inner">
-                <span className="text-xs font-bold uppercase tracking-wider text-cyan-400 block mb-1">
-                  How Phishers Exploit This Layer:
+              <div className="space-y-2 p-5 rounded-xl bg-black/60 border border-white/10">
+                <span
+                  style={{ color: selected.accent }}
+                  className="font-mono text-xs uppercase tracking-wider font-bold block"
+                >
+                  Phishing Attack Vector & Exploitation:
                 </span>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  {selectedPart.phishRisk}
+                <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-light">
+                  {selected.phishRisk}
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Next Section Transition Button */}
-        <div className="flex justify-center">
+        {/* Transition to Next Stage */}
+        <div className="flex items-center justify-between pt-6 border-t border-white/10 font-mono text-sm">
           <button
             onClick={scrollToNext}
-            className="flex items-center space-x-2 px-6 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-blue-500/40 text-blue-300 font-semibold text-sm hover:border-blue-300 transition-all cursor-pointer shadow-lg shadow-blue-950/60 group hover:scale-105"
+            className="group flex items-center space-x-3 px-8 py-4 rounded-full bg-white hover:bg-[#ccff00] text-black font-black uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 cursor-pointer"
           >
             <span>Next: Why Python?</span>
             <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
           </button>
+          <span className="text-xs text-white/40 font-mono hidden sm:inline">STAGE 02 / 06</span>
         </div>
       </div>
     </section>
