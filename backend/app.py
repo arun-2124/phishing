@@ -4,6 +4,7 @@ Provides endpoints for URL phishing risk analysis.
 Operates completely locally; never visits, fetches, or pings submitted targets.
 """
 
+import os
 import sys
 from os import path
 sys.path.insert(0, path.dirname(path.dirname(path.abspath(__file__))))
@@ -15,16 +16,21 @@ from backend.detector import PhishingRiskDetector, ValidationError
 
 app = Flask(__name__)
 
-# Configure CORS to allow local development frontend
+# Configure CORS: allow local development and deployed Vercel frontends
+allowed_origins = [
+    r"https://.*\.vercel\.app",
+    r"http://localhost:\d+",
+    r"http://127\.0\.0\.1:\d+",
+]
+custom_frontend_url = os.environ.get("FRONTEND_URL") or os.environ.get("CORS_ORIGIN")
+if custom_frontend_url:
+    allowed_origins.append(custom_frontend_url.strip())
+
 CORS(app, resources={
     r"/api/*": {
-        "origins": [
-            "http://localhost:5173",
-            "http://127.0.0.1:5173",
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            "*"
-        ]
+        "origins": allowed_origins,
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
     }
 })
 

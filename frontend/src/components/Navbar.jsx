@@ -1,20 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Terminal, ArrowUpRight, Shield, Zap } from 'lucide-react';
+import { API_ENDPOINTS } from '../config/api';
 
 export default function Navbar({ onAnalyzeClick }) {
   const [apiOnline, setApiOnline] = useState(null);
 
   useEffect(() => {
-    fetch('/api/health')
-      .then((res) => res.json())
+    let isMounted = true;
+
+    fetch(API_ENDPOINTS.HEALTH)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
-        if (data.status === 'healthy') {
-          setApiOnline(true);
-        } else {
-          setApiOnline(false);
+        if (isMounted) {
+          setApiOnline(data?.status === 'healthy');
         }
       })
-      .catch(() => setApiOnline(false));
+      .catch(() => {
+        if (isMounted) {
+          setApiOnline(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const scrollToSection = (id) => {
@@ -86,20 +100,30 @@ export default function Navbar({ onAnalyzeClick }) {
         <div className="pointer-events-auto flex items-center space-x-3">
           {/* Real-time Python Engine Status */}
           <div
-            className={`hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider border backdrop-blur-md ${
+            className={`hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider border backdrop-blur-md transition-all ${
               apiOnline === true
                 ? 'bg-emerald-950/40 text-emerald-400 border-emerald-800/60'
                 : apiOnline === false
                 ? 'bg-rose-950/40 text-rose-400 border-rose-800/60'
-                : 'bg-white/5 text-white/40 border-white/10'
+                : 'bg-amber-950/30 text-amber-300 border-amber-800/40'
             }`}
           >
             <span
               className={`w-1.5 h-1.5 rounded-full ${
-                apiOnline === true ? 'bg-emerald-400 animate-ping' : 'bg-rose-500'
+                apiOnline === true
+                  ? 'bg-emerald-400 animate-ping'
+                  : apiOnline === false
+                  ? 'bg-rose-500'
+                  : 'bg-amber-400 animate-pulse'
               }`}
             />
-            <span>{apiOnline === true ? 'Engine: Ready' : 'Engine: Offline'}</span>
+            <span>
+              {apiOnline === true
+                ? 'Engine: Ready'
+                : apiOnline === false
+                ? 'Engine: Offline'
+                : 'Engine: Connecting...'}
+            </span>
           </div>
 
           <button

@@ -13,6 +13,7 @@ import {
   Zap
 } from 'lucide-react';
 import ResultsPanel from './ResultsPanel';
+import { API_ENDPOINTS } from '../config/api';
 
 export default function Analyzer() {
   const [urlInput, setUrlInput] = useState('');
@@ -45,7 +46,7 @@ export default function Analyzer() {
     setError(null);
 
     try {
-      const response = await fetch('/api/analyze', {
+      const response = await fetch(API_ENDPOINTS.ANALYZE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,11 +54,11 @@ export default function Analyzer() {
         body: JSON.stringify({ url: trimmed }),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         setError({
-          title: data.error || 'PARSER REJECTION',
+          title: data.error || `HTTP ${response.status} ERROR`,
           message: data.message || 'The server rejected this input.',
           suggestion: data.suggestion || "Please ensure the address is formatted as a valid HTTP or HTTPS URL.",
         });
@@ -70,7 +71,7 @@ export default function Analyzer() {
       setError({
         title: 'ENGINE DISCONNECTED',
         message: 'Could not connect to the Python Flask backend service.',
-        suggestion: 'Verify that the backend is running (`python backend/app.py`).',
+        suggestion: 'Verify that the backend is running and reachable.',
       });
       setResult(null);
     } finally {
