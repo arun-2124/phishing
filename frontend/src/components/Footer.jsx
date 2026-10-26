@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldAlert, Terminal, ArrowUp, Code2 } from 'lucide-react';
+import { ShieldCheck, ArrowUp } from 'lucide-react';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -7,29 +7,29 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-slate-800 bg-[#060a14] text-slate-400 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-800/80">
+    <footer className="border-t border-slate-800/80 bg-[#040714] text-slate-400 py-12 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-800/60">
           {/* Brand & Title */}
           <div className="flex items-center space-x-3 text-center md:text-left">
-            <div className="p-2 rounded-xl bg-cyan-950/80 border border-cyan-800 text-cyan-400">
-              <ShieldAlert className="w-5 h-5" />
+            <div className="p-2.5 rounded-2xl bg-cyan-950/80 border border-cyan-800 text-cyan-400 shadow-md">
+              <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-base font-bold text-white tracking-tight">PhishGuard</span>
+              <span className="text-base font-black text-white tracking-tight">PhishGuard</span>
               <p className="text-xs text-slate-400">Phishing URL Analysis Using Python</p>
             </div>
           </div>
 
           {/* Quick Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-mono">
-            <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-cyan-300">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 text-xs font-mono">
+            <span className="px-3 py-1 rounded-full glass-panel border border-slate-800 text-cyan-300">
               Python 3.14 + Flask
             </span>
-            <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-blue-300">
-              React + Vite + Tailwind CSS
+            <span className="px-3 py-1 rounded-full glass-panel border border-slate-800 text-blue-300">
+              React + Vite + Tailwind CSS v4
             </span>
-            <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-emerald-300">
+            <span className="px-3 py-1 rounded-full glass-panel border border-slate-800 text-emerald-300">
               RFC 3986 Standard
             </span>
           </div>
@@ -40,12 +40,12 @@ export default function Footer() {
             className="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer group"
           >
             <span>Back to top</span>
-            <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
+            <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-1 transition-transform" />
           </button>
         </div>
 
         {/* Bottom Disclaimer & Copyright */}
-        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p className="text-center md:text-left">
             Educational cybersecurity project. Demonstrates transparent URL pattern analysis without executing network queries.
           </p>
