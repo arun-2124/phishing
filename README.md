@@ -3,52 +3,47 @@
 [![Python Version](https://img.shields.io/badge/Python-3.14%2B-blue.svg)](https://www.python.org/)
 [![Framework](https://img.shields.io/badge/Backend-Flask-green.svg)](https://flask.palletsprojects.com/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20Vite%20%2B%20TailwindCSS-cyan.svg)](https://vitejs.dev/)
-[![Tests](https://img.shields.io/badge/Tests-28%20Passing-brightgreen.svg)](#running-automated-tests)
-[![Security Policy](https://img.shields.io/badge/Air--Gapped-Zero%20External%20Requests-emerald.svg)](#security--architecture)
+[![Tests](https://img.shields.io/badge/Tests-36%20Passing-brightgreen.svg)](#running-automated-tests)
+[![Presentation Mode](https://img.shields.io/badge/Presentation-Built--In%20Slides%20%26%20Speech-indigo.svg)](#presentation-walkthrough)
+[![Security Policy](https://img.shields.io/badge/Air--Gapped-Zero%20External%20Requests-emerald.svg)](#safety-architecture)
 
-**PhishGuard** is an educational, transparent, presentation-ready web application for detecting phishing characteristics in Uniform Resource Locators (URLs). Engineered with Python's standard library (`urllib.parse` and `ipaddress`) and a React dashboard, PhishGuard evaluates structural anomalies and deceptive lexical patterns locally on the server without ever opening or visiting the submitted destination.
-
----
-
-## Table of Contents
-
-1. [Project Overview](#project-overview)
-2. [Key Features](#key-features)
-3. [Technology Stack](#technology-stack)
-4. [How the Detection Rules Work](#how-the-detection-rules-work)
-5. [Scoring & Classification Thresholds](#scoring--classification-thresholds)
-6. [Operational Limitations & False Positives](#operational-limitations--false-positives)
-7. [Installation & Setup (Windows PowerShell)](#installation--setup-windows-powershell)
-8. [Starting the Application](#starting-the-application)
-9. [Running Automated Tests](#running-automated-tests)
-10. [Demonstration Samples](#demonstration-samples)
-11. [Presentation & Demo Script](#presentation--demo-script)
-12. [Project Structure](#project-structure)
+**PhishGuard** is an educational, presentation-ready cybersecurity web application for analyzing Uniform Resource Locators (URLs) to identify characteristics commonly associated with phishing. Engineered with Python's standard library (`urllib.parse` and `ipaddress`) and a React dashboard, PhishGuard incorporates your entire college presentation speech, interactive anatomy diagrams, and a live analyzer directly on the screen—eliminating the need for a separate PowerPoint presentation.
 
 ---
 
-## Project Overview
+## Presentation Structure (6 In-Page Slides)
 
-Phishing attacks commonly rely on deceptive URL structures to impersonate trusted services. While modern browser defenses use cloud reputation feeds, understanding the underlying anatomy of suspicious URLs is essential for cybersecurity education and threat modeling.
+The website is structured into six presentation sections with verbatim speaker notes:
 
-PhishGuard provides an explainable heuristic scanner that:
-- Decomposes URLs into standard RFC 3986 components.
-- Analyzes authority spoofing, raw IP usage, subdomain depth, and protocol safety.
-- Computes an **Estimated URL Risk** score from 0 to 100.
-- Explains the exact reason why each specific indicator was triggered.
-- Operates under strict **safe analysis constraints** (the engine never issues DNS lookups or HTTP requests to submitted targets).
+1. **Introduction**:
+   - Heading: *"Phishing URL Analysis Using Python"*
+   - Opening hook on fraudulent bank links and the mechanics of deceptive URLs.
+2. **What is Phishing URL Analysis?**:
+   - Definition of syntactic indicators.
+   - **Interactive URL Anatomy Illustration**: Click to inspect Scheme, Hostname/IP, Path, and Query Parameters with their specific phishing relevance.
+3. **Why Python?**:
+   - Technical rationale for Python standard library tools.
+   - Annotated Python code snippet illustrating `urllib.parse.urlsplit()` and `ipaddress.ip_address()`.
+4. **How Does Our Detector Work?**:
+   - 3-step core process: Input -> Extraction -> Heuristic Scoring.
+   - **Interactive 5-Step Pipeline** and transparent rule weights table (+40 pts for IP, +35 for userinfo disguise, +30 for brand mimicry).
+5. **Live Demonstration**:
+   - Heading: *"Let's Analyse a URL"*
+   - Live interactive URL inspection console accepting **any arbitrary HTTP or HTTPS URL** (paste any URL from the audience).
+   - Dynamic 0-100 Estimated URL Risk scoring, triggered indicators breakdown, and passed check audit.
+6. **Limitations and Conclusion**:
+   - Candid discussion of false positives, evasion by sophisticated attackers, and lack of content/reputation lookups.
+   - Clean "Thank You!" presentation closing card.
 
 ---
 
-## Key Features
+## Safety Architecture
 
-- **100% Local String Inspection**: Air-gapped safety guarantees that submitted URLs are never visited, crawled, or pinged.
-- **Python Standard Library Core**: Uses `urllib.parse.urlsplit` and `ipaddress.ip_address` for RFC-compliant parsing.
-- **Explainable Heuristics**: Every triggered rule returns a plain-English explanation of the underlying attack vector.
-- **Passed Check Audit**: Displays both triggered flags and passed security criteria for full transparency.
-- **Modern Security Dashboard**: Dark navy visual design with cyan/blue accents, accessible color-coded risk tiers, and responsive layouts.
-- **Curated Demonstration Catalog**: Built-in reference samples to immediately test clean, suspicious, nuanced, and malformed inputs with one click.
-- **Comprehensive Test Suite**: 28 unit and integration tests verifying parsing edge cases, scoring boundaries, and error rejection.
+PhishGuard operates as a **strictly air-gapped, local string inspection engine**:
+- **Zero External Network Calls**: The server never opens, connects to, fetches, crawls, or pings submitted URLs.
+- **No HTML Inspection**: Webpage DOM, JavaScript, and remote assets are never downloaded.
+- **Safe Demonstration**: You can safely analyze suspicious or malformed URLs in front of your class or evaluators without triggering security alarms or malware downloads.
+- **Estimated Risk Label**: Scores represent an *Estimated Structural Risk index*, not an empirically calibrated probability of maliciousness.
 
 ---
 
@@ -57,148 +52,34 @@ PhishGuard provides an explainable heuristic scanner that:
 | Layer | Technology | Purpose |
 |---|---|---|
 | **Backend Engine** | Python 3.14+ | Core heuristic analysis & feature extraction |
-| **Parsing** | `urllib.parse.urlsplit` | Standard library URL component separation |
+| **URL Parsing** | `urllib.parse.urlsplit` | RFC 3986 component separation |
 | **IP Detection** | `ipaddress.ip_address` | IPv4 & bracketed IPv6 literal identification |
-| **API Framework** | Flask + Flask-CORS | REST API (`/api/analyze`, `/api/health`, `/api/samples`) |
-| **Testing** | Python `unittest` | Automated test suite for detector and endpoints |
-| **Frontend** | React 19 + Vite | High-performance reactive user interface |
-| **Styling** | Tailwind CSS v4 | Dark navy cybersecurity design system |
+| **API Framework** | Flask + Flask-CORS | REST API (`/api/analyze`, `/api/health`) |
+| **Testing** | Python `unittest` | 36 automated test cases covering edge cases & arbitrary URLs |
+| **Frontend** | React 19 + Vite | High-performance reactive presentation interface |
+| **Styling** | Tailwind CSS v4 | Dark navy cybersecurity dashboard theme |
 | **Icons** | Lucide React | Cybersecurity UI indicators |
 
 ---
 
-## How the Detection Rules Work
-
-The detection engine evaluates URLs across four functional categories using 13+ weighted structural rules:
-
-```
-                          Target URL String
-                                 │
-                                 ▼
-                    [ Input Validation & Trim ]
-              (Check Scheme: http/https, Max Length)
-                                 │
-                                 ▼
-                     [ urllib.parse.urlsplit ]
-         ┌───────────────────────┼───────────────────────┐
-         ▼                       ▼                       ▼
- [ Host & Authority ]   [ Security & Transport ]  [ Path & Parameters ]
- - Raw IP Address       - HTTPS vs HTTP           - Consecutive '//'
- - Userinfo Spoof (@)   - Custom Web Ports        - Query Redirect URLs
- - Brand Impersonation                            - Credential Keywords
- - Subdomain Depth                                - Percent-Encoding
- - Hyphen Concatenation
-         │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 ▼
-                     [ Weighted Rule Scoring ]
-                    (Clamped to 0 - 100 Range)
-                                 │
-                                 ▼
-                 [ Structured Output & Guidance ]
-```
-
-### Core Heuristic Rules
-
-1. **IP Address Hostname (`IP_ADDRESS_HOSTNAME`, +40 pts)**:
-   Detects raw IPv4 or bracketed IPv6 literals (e.g. `http://192.0.2.10/login`). Legitimate consumer portals almost never use direct IP addresses.
-2. **Userinfo Disguise in Authority (`USERINFO_EMBEDDED`, +35 pts)**:
-   Detects `@` delimiter in the URL authority (e.g. `https://paypal.com:account@evil.com`). The text before `@` represents user credentials, not the host, frequently confusing victims.
-3. **Brand Mimicry in Subdomains (`BRAND_IMPERSONATION`, +30 pts)**:
-   Detects targeted brand names (PayPal, Apple, Google, Microsoft, Chase, etc.) placed inside subdomains or hyphenated segments of a third-party root domain.
-4. **Unencrypted HTTP Protocol (`UNENCRYPTED_HTTP`, +15 pts)**:
-   Identifies plaintext HTTP. Sensitive portals mandate encrypted connections.
-5. **Non-Standard Port (`NON_STANDARD_PORT`, +15 pts)**:
-   Detects non-default ports (e.g. `:8080`, `:8443`). Phishing campaigns often deploy on ad-hoc or compromised ports.
-6. **Excessive Subdomain Depth (`EXCESSIVE_SUBDOMAINS`, +15 pts)**:
-   Flags hostnames containing 4 or more labels (3+ subdomains) designed to hide the parent domain.
-7. **Abnormal URL Length (`EXCESSIVE_URL_LENGTH`, +8 to +15 pts)**:
-   Evaluates length (> 75 chars = moderate; > 120 chars = high) commonly used to pass encoded tracking payloads or push domains off-screen.
-8. **Security Keywords in Hostname/Path (`SENSITIVE_KEYWORDS`, +2 to +15 pts)**:
-   Assesses authentication terms (`login`, `verify`, `account`, `secure`). Keywords in hostnames receive higher penalty than standard paths.
-9. **Hyphenated Hostname (`HYPHENATED_HOSTNAME`, +12 pts)**:
-   Detects two or more hyphens in the hostname (e.g. `secure-account-update-portal`).
-10. **Suspicious / Abuse-Prone TLD (`SUSPICIOUS_TLD`, +15 pts)**:
-    Flags top-level domains frequently abused in free or low-verification registrar campaigns.
-11. **Heavy Percent-Encoding (`PERCENT_ENCODING`, +10 pts)**:
-    Identifies multiple `%XX` hex sequences used to obfuscate path strings.
-12. **Embedded Redirect in Query (`EMBEDDED_QUERY_REDIRECT`, +12 pts)**:
-    Detects secondary URLs in query parameters (`?redirect=http://...`) indicating Open Redirect abuse.
-13. **Consecutive Slashes in Path (`DOUBLE_SLASH_PATH`, +8 pts)**:
-    Checks for `//` in the path, often used for parser confusion.
-
----
-
-## Scoring & Classification Thresholds
-
-The score is explicitly labeled **"Estimated URL Risk"** and is mapped into three clear tiers:
-
-| Tier | Score Range | Visual Style | Practical Interpretation |
-|---|---|---|---|
-| **LOW RISK** | **0 – 29** | Emerald Green | Standard structural patterns. No high-risk anomalies detected. |
-| **MEDIUM RISK** | **30 – 64** | Amber / Orange | Moderate caution points detected (unencrypted HTTP, deep subdomains, or length). |
-| **HIGH RISK** | **65 – 100** | Crimson Red | Critical structural red flags present (raw IP host, userinfo spoofing, brand mimicry). |
-
-> **Score Calibration Note:** The score is a deterministic, rule-based heuristic index. It is intentionally designed to be explainable rather than a statistically calibrated probability of maliciousness.
-
----
-
-## Operational Limitations & False Positives
-
-To maintain academic and professional integrity, PhishGuard clearly highlights its boundaries:
-
-- **Low score != Guaranteed Safe**: A newly registered domain with clean syntax and valid HTTPS certificate can still host an active phishing scam.
-- **High score != Definite Malice**: Internal development environments, enterprise load balancers, or intranet tools with IP addresses or custom ports may trigger warnings (**false positives**).
-- **No Reputation Querying**: PhishGuard evaluates syntactic structure only. It does not perform DNS domain age lookups or query commercial threat intelligence APIs.
-- **No Page Inspection**: PhishGuard never visits the remote server or renders target HTML/JavaScript, ensuring safe execution on any machine.
-
----
-
-## Installation & Setup (Windows PowerShell)
+## How to Run Locally (Windows PowerShell)
 
 ### Prerequisites
 - Python 3.10+ (tested on Python 3.14)
 - Node.js 18+ (tested on Node.js v24)
-- Git
+- Windows PowerShell
 
-### 1. Clone or Open the Repository
+### Step 1: Start Flask Backend (Port 5000)
+Open a PowerShell terminal:
 ```powershell
 cd E:\phishing
-```
-
-### 2. Set Up Python Virtual Environment
-```powershell
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
 .\venv\Scripts\Activate.ps1
-
-# Install backend dependencies
-pip install -r backend/requirements.txt
+python backend/app.py
 ```
+*Backend runs on `http://127.0.0.1:5000`.*
 
-### 3. Install Frontend Dependencies
-```powershell
-cd frontend
-npm install
-cd ..
-```
-
----
-
-## Starting the Application
-
-To run the application locally, start both the Flask backend and Vite frontend:
-
-### Terminal 1: Start Flask Backend (Port 5000)
-```powershell
-cd E:\phishing
-.\venv\Scripts\python backend/app.py
-```
-*The backend API will start on `http://127.0.0.1:5000`.*
-
-### Terminal 2: Start React Frontend (Port 5173)
+### Step 2: Start React Frontend (Port 5173)
+Open a second PowerShell terminal:
 ```powershell
 cd E:\phishing\frontend
 npm run dev
@@ -211,69 +92,65 @@ The frontend automatically proxies `/api/*` requests to the Flask backend.
 
 ## Running Automated Tests
 
-Run the complete Python test suite covering feature extraction, edge cases, and REST endpoints:
+Run the complete 36-test automated suite verifying feature extraction, arbitrary URLs, and API endpoints:
 
 ```powershell
 cd E:\phishing
 .\venv\Scripts\python -m unittest discover -s backend/tests -v
 ```
 
-### Test Coverage Highlights (28 Tests)
-- Standard HTTPS URL (low risk verification)
+### Verified Test Cases (36 Tests Passing)
+- Standard HTTPS URL (`https://example.com/`)
 - Standard HTTP URL (unencrypted transport warning)
 - Hostname that is an IPv4 literal
 - Hostname that is an IPv6 literal (`[2001:db8::1]`)
-- Unusually long URLs (> 120 chars)
-- Multiple hostname labels / deep subdomains
+- Arbitrary major website URLs (`github.com/torvalds/linux`, `wikipedia.org`, `stackoverflow.com`)
+- Arbitrary custom ports (`http://internal-portal.edu:8080/dashboard`)
+- Deep subdomains (`dev.staging.corp.internal.example.org`)
+- Query parameters and percent encoding (`item=laptop%20pro`)
+- Brand mimicry in hyphenated hostnames
+- Query parameters containing deceptive domain text
 - User information in URL authority (`user:pass@host`)
-- URL with query parameters
-- Malformed URLs (missing host, spaces in URL)
-- Unsupported schemes (`ftp://`, `javascript:`, `file://`)
-- Empty or whitespace input
-- Unusual non-standard ports
-- Case-insensitive hostname normalization
-- Hostname with trailing FQDN dot (`example.com.`)
-- Query parameters containing deceptive domain text (ensuring host parser is not confused)
+- Rejection of unsupported schemes (`ftp://`, `javascript:`, `mailto:`, `ssh:`)
+- Rejection of malformed URLs and empty/whitespace inputs
+- Dynamic re-analysis idempotence and repeatability
 - Flask API status codes, JSON validation, and error handlers
 
 ---
 
-## Demonstration Samples
+## Presentation Walkthrough & Demonstration Guide
 
-The application includes interactive demonstration samples accessible directly on the UI:
+Use this sequence to present directly off the website:
 
-| Sample Name | Target URL | Expected Tier | Educational Focus |
-|---|---|---|---|
-| **Clean Reference** | `https://example.com/` | **LOW RISK (0/100)** | Demonstrates clean domain structure with 0 triggered rules. |
-| **Raw IP Hostname** | `http://192.0.2.10/login?verify=1` | **HIGH RISK (65/100)** | Highlights raw IP address, unencrypted HTTP, and credential keywords. |
-| **Subdomain Nuance** | `https://login.example.com/account/verify` | **LOW RISK (15/100)** | Shows how legitimate corporate subdomains are not falsely flagged as high risk. |
-| **Compound Deceptive URL** | `https://paypal.com:account@update-billing-support.tk/login` | **HIGH RISK (92/100)** | Demonstrates brand impersonation, authority spoofing (`@`), and abusive TLD. |
-| **Unsupported Protocol** | `ftp://files.example.com/archive.zip` | **Validation Error** | Demonstrates robust protocol validation and user feedback. |
-
----
-
-## Presentation & Demo Script
-
-When presenting this project, follow this 3-minute walkthrough:
-
-1. **Introduction (30s)**:
-   - *"Welcome! This is PhishGuard, a cybersecurity web application that analyzes URL strings to detect phishing indicators using Python."*
-   - Point to the navigation bar: note the **Python API Online** status badge and dark cybersecurity dashboard theme.
-2. **Safety Architecture (30s)**:
-   - Highlight the **Safety Guarantee**: *"Our tool never visits or pings the target website. It analyzes the anatomy of the URL string locally using Python's `urllib.parse` and `ipaddress` modules."*
-3. **Interactive Demonstration (1m)**:
-   - **Sample 1**: Click **Standard Reference URL (`https://example.com/`)**.
-     - Show the 0/100 LOW RISK score, the green gauge, and open the *Checked Parameters That Passed* drawer to show all 13 verified checks.
-   - **Sample 2**: Click **Subdomain & Keyword Nuance (`https://login.example.com/account/verify`)**.
-     - Explain: *"Notice how our engine doesn't blindly flag the URL as malicious just because it contains the word 'login'. It awards only 15 points, remaining in the Low Risk tier because the apex domain structure is legitimate."*
-   - **Sample 3**: Click **Raw IP Address (`http://192.0.2.10/login?verify=1`)**.
-     - Point out the instant classification transition to **HIGH RISK (65/100)**, showing the exact triggered indicators (IPv4 literal, unencrypted HTTP, login over plaintext).
-   - **Sample 4**: Click **Compound Deceptive URL**.
-     - Show how userinfo authority spoofing (`@`) and brand impersonation in subdomains are detected and explained in plain English.
-4. **Validation Handling (15s)**:
-   - Enter `ftp://example.com` or empty text to demonstrate the friendly validation alert that guides the user to supply valid HTTP/HTTPS URLs.
-5. **Conclusion (15s)**:
-   - Scroll down to the **How It Works** pipeline, **Feature Grid**, and **About & Security Disclaimer** to reiterate responsible disclosure and heuristic boundaries.
+1. **Title & Opening (Section 1)**:
+   - Scroll to **Section 1: Introduction**.
+   - Read or refer to the on-screen speaker notes:
+     > *"Good morning everyone! Today, I'm going to talk about Phishing URL Analysis Using Python..."*
+   - Click **"Next: What is Phishing URL Analysis?"**.
+2. **Concept & Anatomy (Section 2)**:
+   - Read the definition of phishing URL indicators.
+   - Use the **Interactive URL Anatomy Illustration**: click **Scheme**, **Hostname**, **Path**, and **Query** to explain what each component does and how attackers manipulate them.
+   - Click **"Next: Why Python?"**.
+3. **Python Standard Library (Section 3)**:
+   - Explain why `urllib.parse` and `ipaddress` were chosen.
+   - Point to the on-screen code snippet showing `urlsplit()` extracting components cleanly.
+   - Click **"Next: How Does Our Detector Work?"**.
+4. **Heuristic Pipeline (Section 4)**:
+   - Click through the 5 interactive pipeline steps (Input -> Parsing -> Feature Extraction -> Scoring -> Explanation).
+   - Point out the **Transparent Rule Weights** table showing that high-impact anomalies (like raw IP hosts or userinfo `@` disguises) contribute +35 to +40 points, whereas generic path keywords only contribute minimal points.
+   - Click **"Proceed to Live Demonstration"**.
+5. **Live URL Analysis (Section 5)**:
+   - Announce: *"We can enter any properly formatted HTTP or HTTPS URL."*
+   - Paste or type any arbitrary URL:
+     - Example clean URL: `https://github.com/torvalds/linux` -> Click **Analyse URL** -> Show **LOW RISK (0/100)** with green bar and open the *Checked Parameters That Passed* drawer.
+     - Example suspicious IP URL: `http://198.51.100.25:8080/secure/update?verify=true` -> Click **Analyse URL** -> Show **HIGH RISK (80/100)** and point out the detected indicators (IPv4 literal +40, unencrypted HTTP +15, custom port +15, login keywords +10).
+     - Example input from the audience: Paste any link suggested by your classmates or evaluators.
+     - Example malformed test: Enter `ftp://example.com` or `invalid_link` to show friendly validation feedback.
+   - Click **"Next: Limitations and Conclusion"**.
+6. **Closing & Limitations (Section 6)**:
+   - Reiterate that this is a rule-based syntactic detector: it does not crawl page HTML or query reputation feeds.
+   - Deliver the concluding takeaway:
+     > *"Most importantly, we learn that cybersecurity is not only about detecting threats but also about understanding the warning signs behind them. Thank you!"*
 
 ---
 
@@ -282,36 +159,42 @@ When presenting this project, follow this 3-minute walkthrough:
 ```
 phishing/
 ├── backend/
-│   ├── app.py                 # Flask REST API endpoints & CORS configuration
-│   ├── detector.py            # Python URL parser & weighted rule scoring engine
-│   ├── requirements.txt       # Flask & Flask-Cors dependencies
+│   ├── app.py                      # Flask REST API endpoints & CORS configuration
+│   ├── detector.py                 # Python URL parser & weighted rule scoring engine
+│   ├── requirements.txt            # Flask & Flask-Cors dependencies
 │   └── tests/
 │       ├── __init__.py
-│       ├── test_detector.py   # 18 unit tests for URL parsing & rules
-│       └── test_api.py        # 10 integration tests for Flask REST endpoints
+│       ├── test_detector.py        # 18 unit tests for URL parsing & rules
+│       ├── test_api.py             # 10 integration tests for Flask REST endpoints
+│       └── test_arbitrary_urls.py  # 8 integration tests for arbitrary URLs & edge cases
 ├── frontend/
-│   ├── index.html             # HTML entry point with PhishGuard branding
-│   ├── package.json           # Frontend dependencies & build scripts
-│   ├── vite.config.js         # Vite configuration with Tailwind CSS & API proxy
+│   ├── index.html                  # HTML entry point with PhishGuard branding
+│   ├── package.json                # Frontend dependencies & build scripts
+│   ├── vite.config.js              # Vite configuration with Tailwind CSS & API proxy
 │   └── src/
-│       ├── App.jsx            # Main application layout
-│       ├── main.jsx           # React DOM root
-│       ├── index.css          # Tailwind CSS v4 directives & theme variables
+│       ├── App.jsx                 # Presentation slide sequence coordinator
+│       ├── main.jsx                # React DOM root
+│       ├── index.css               # Tailwind CSS v4 directives & theme variables
 │       └── components/
-│           ├── Navbar.jsx          # Header with live API health indicator
-│           ├── Hero.jsx            # Hero banner with feature pills & safety note
-│           ├── Analyzer.jsx        # URL input console & demo sample chips
-│           ├── ResultsPanel.jsx    # Score gauge, indicators, parsed components
-│           ├── HowItWorks.jsx      # 5-step visual analysis pipeline
-│           ├── Features.jsx        # 8 security inspection highlights
-│           ├── AboutDisclaimer.jsx # Educational context & limitations callout
-│           └── Footer.jsx          # Tech stack badges & GitHub reference
-├── .gitignore                 # Excludes venv, node_modules, cache, dist
-└── README.md                  # Complete documentation and presentation guide
+│           ├── Navbar.jsx                   # Sticky navigation & live backend health badge
+│           ├── Section1_Introduction.jsx    # Slide 1: Title, hook & speaker notes
+│           ├── Section2_WhatIsAnalysis.jsx  # Slide 2: Definition & interactive URL anatomy
+│           ├── Section3_WhyPython.jsx       # Slide 3: urllib.parse code snippet & explanation
+│           ├── Section4_HowItWorks.jsx      # Slide 4: 5-step pipeline & rule weights table
+│           ├── Analyzer.jsx                 # Slide 5: Live console accepting arbitrary URLs
+│           ├── ResultsPanel.jsx             # Results panel: score, indicators, passed checks
+│           ├── Section6_Conclusion.jsx      # Slide 6: Limitations, takeaways & thank you card
+│           └── Footer.jsx                   # Academic attribution & GitHub link
+├── .gitignore                      # Excludes venv, node_modules, cache, dist
+└── README.md                       # Comprehensive guide and presentation script
 ```
 
 ---
 
-## License
+## Presentation Checklist
 
-Developed for educational and demonstration purposes. Use responsibly.
+Before starting your college presentation:
+- [x] Flask backend running on `http://127.0.0.1:5000` (`python backend/app.py`).
+- [x] React frontend running on `http://localhost:5173` (`npm run dev`).
+- [x] Live backend indicator shows **"Python API Online"** in green on the top right.
+- [x] Full-screen your browser (`F11`) for a clean, distraction-free slide presentation.

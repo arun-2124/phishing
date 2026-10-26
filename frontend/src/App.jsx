@@ -1,15 +1,16 @@
 import React from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
+import Section1_Introduction from './components/Section1_Introduction';
+import Section2_WhatIsAnalysis from './components/Section2_WhatIsAnalysis';
+import Section3_WhyPython from './components/Section3_WhyPython';
+import Section4_HowItWorks from './components/Section4_HowItWorks';
 import Analyzer from './components/Analyzer';
-import HowItWorks from './components/HowItWorks';
-import Features from './components/Features';
-import AboutDisclaimer from './components/AboutDisclaimer';
+import Section6_Conclusion from './components/Section6_Conclusion';
 import Footer from './components/Footer';
 
 export default function App() {
   const handleFocusAnalyzer = () => {
-    const input = document.getElementById('url-input');
+    const input = document.getElementById('url-live-input');
     if (input) {
       input.focus();
     }
@@ -19,11 +20,12 @@ export default function App() {
     <div className="min-h-screen bg-[#080d1a] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
       <Navbar onAnalyzeClick={handleFocusAnalyzer} />
       <main className="flex-grow">
-        <Hero onGetStarted={handleFocusAnalyzer} />
+        <Section1_Introduction />
+        <Section2_WhatIsAnalysis />
+        <Section3_WhyPython />
+        <Section4_HowItWorks />
         <Analyzer />
-        <HowItWorks />
-        <Features />
-        <AboutDisclaimer />
+        <Section6_Conclusion />
       </main>
       <Footer />
     </div>

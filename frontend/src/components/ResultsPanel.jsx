@@ -7,8 +7,6 @@ import {
   Lock,
   Unlock,
   Server,
-  Globe,
-  Sliders,
   FileText,
   ChevronDown,
   ChevronUp,
@@ -16,7 +14,8 @@ import {
   Copy,
   Check,
   HelpCircle,
-  ExternalLink
+  Sliders,
+  Scale
 } from 'lucide-react';
 
 export default function ResultsPanel({ result, onReset }) {
@@ -29,7 +28,7 @@ export default function ResultsPanel({ result, onReset }) {
     url,
     risk_score,
     risk_level,
-    score_label,
+    score_label = 'Estimated URL Risk',
     triggered_rules = [],
     passed_rules = [],
     features = {},
@@ -38,25 +37,21 @@ export default function ResultsPanel({ result, onReset }) {
     disclaimer,
   } = result;
 
-  const isHigh = risk_level === 'HIGH RISK';
-  const isMedium = risk_level === 'MEDIUM RISK';
-  const isLow = risk_level === 'LOW RISK';
-
   // Styling maps
   const tierConfig = {
     'HIGH RISK': {
       border: 'border-rose-500/60',
-      bgGlow: 'bg-rose-950/20 shadow-[0_0_35px_-5px_rgba(244,63,94,0.2)]',
-      badgeBg: 'bg-rose-950/80 text-rose-300 border-rose-700/80',
+      bgGlow: 'bg-rose-950/20 shadow-[0_0_35px_-5px_rgba(244,63,94,0.25)]',
+      badgeBg: 'bg-rose-950/90 text-rose-300 border-rose-700/80',
       barColor: 'from-amber-500 via-rose-500 to-red-600',
       textAccent: 'text-rose-400',
       icon: <ShieldAlert className="w-8 h-8 text-rose-400" />,
-      tag: 'Critical Indicators Detected',
+      tag: 'Critical Structural Indicators Detected',
     },
     'MEDIUM RISK': {
       border: 'border-amber-500/60',
-      bgGlow: 'bg-amber-950/20 shadow-[0_0_35px_-5px_rgba(245,158,11,0.2)]',
-      badgeBg: 'bg-amber-950/80 text-amber-300 border-amber-700/80',
+      bgGlow: 'bg-amber-950/20 shadow-[0_0_35px_-5px_rgba(245,158,11,0.25)]',
+      badgeBg: 'bg-amber-950/90 text-amber-300 border-amber-700/80',
       barColor: 'from-yellow-400 via-amber-500 to-orange-500',
       textAccent: 'text-amber-400',
       icon: <AlertTriangle className="w-8 h-8 text-amber-400" />,
@@ -64,12 +59,12 @@ export default function ResultsPanel({ result, onReset }) {
     },
     'LOW RISK': {
       border: 'border-emerald-500/60',
-      bgGlow: 'bg-emerald-950/20 shadow-[0_0_35px_-5px_rgba(16,185,129,0.2)]',
-      badgeBg: 'bg-emerald-950/80 text-emerald-300 border-emerald-700/80',
+      bgGlow: 'bg-emerald-950/20 shadow-[0_0_35px_-5px_rgba(16,185,129,0.25)]',
+      badgeBg: 'bg-emerald-950/90 text-emerald-300 border-emerald-700/80',
       barColor: 'from-teal-400 via-emerald-500 to-green-500',
       textAccent: 'text-emerald-400',
       icon: <ShieldCheck className="w-8 h-8 text-emerald-400" />,
-      tag: 'Standard URL Characteristics',
+      tag: 'Low Structural Risk (Not Guaranteed Safe)',
     },
   }[risk_level] || {
     border: 'border-slate-700',
@@ -87,7 +82,7 @@ Target URL: ${url}
 Estimated Risk Score: ${risk_score}/100 (${risk_level})
 Triggered Rules: ${triggered_rules.length}
 ${triggered_rules.map((r) => `- [${r.name}] (+${r.weight} pts): ${r.explanation}`).join('\n')}
-Recommendation: ${recommendation}
+Analyst Recommendation: ${recommendation}
 Disclaimer: ${disclaimer}`;
 
     navigator.clipboard.writeText(text).then(() => {
@@ -103,7 +98,7 @@ Disclaimer: ${disclaimer}`;
       {/* Top Banner Header */}
       <div className="px-6 py-5 bg-[#090f1d] border-b border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center space-x-4">
-          <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+          <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 shrink-0">
             {tierConfig.icon}
           </div>
           <div>
@@ -147,7 +142,7 @@ Disclaimer: ${disclaimer}`;
               onClick={onReset}
               className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-750 text-xs font-medium text-slate-400 hover:text-white transition-colors cursor-pointer"
             >
-              Analyze Another
+              Analyse Another URL
             </button>
           )}
         </div>
@@ -163,8 +158,8 @@ Disclaimer: ${disclaimer}`;
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   {score_label}
                 </span>
-                <p className="text-xs text-slate-400">
-                  Transparent 0-100 rule calculation (Not a probability)
+                <p className="text-xs text-slate-500">
+                  Transparent 0-100 structural calculation (Not a statistical probability)
                 </p>
               </div>
               <div className="flex items-baseline space-x-1">
@@ -176,7 +171,7 @@ Disclaimer: ${disclaimer}`;
             </div>
 
             {/* Gauge Progress Bar */}
-            <div className="h-3.5 w-full bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+            <div className="h-4 w-full bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
               <div
                 className={`h-full rounded-full bg-gradient-to-r ${tierConfig.barColor} transition-all duration-700 ease-out`}
                 style={{ width: `${Math.max(5, risk_score)}%` }}
@@ -185,7 +180,7 @@ Disclaimer: ${disclaimer}`;
 
             {/* Threshold scale labels */}
             <div className="flex justify-between text-[11px] font-mono text-slate-400 px-0.5">
-              <span className="text-emerald-400">0 - 29: Low Risk</span>
+              <span className="text-emerald-400">0 - 29: Low Structural Risk</span>
               <span className="text-amber-400">30 - 64: Medium Risk</span>
               <span className="text-rose-400">65 - 100: High Risk</span>
             </div>
@@ -196,7 +191,7 @@ Disclaimer: ${disclaimer}`;
             <div className="flex items-center justify-between text-xs">
               <span className="text-slate-400 flex items-center gap-1.5">
                 <Sliders className="w-3.5 h-3.5 text-cyan-400" />
-                Triggered Rules:
+                Triggered Warnings:
               </span>
               <span className="font-bold text-white">{triggered_rules.length}</span>
             </div>
@@ -243,7 +238,7 @@ Disclaimer: ${disclaimer}`;
           </div>
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-300">
-              Analyst Recommendation
+              Analyst Recommendation & Safety Guidance
             </h4>
             <p className="text-sm text-slate-200 mt-1 leading-relaxed">{recommendation}</p>
           </div>
@@ -253,14 +248,14 @@ Disclaimer: ${disclaimer}`;
         <div>
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-              <span>Triggered Risk Indicators</span>
+              <span>Triggered Structural Indicators</span>
               <span className="px-2 py-0.5 text-xs rounded-full bg-slate-800 text-slate-400 border border-slate-700">
                 {triggered_rules.length}
               </span>
             </h4>
             {triggered_rules.length === 0 && (
               <span className="text-xs text-emerald-400 font-medium">
-                No high-risk structural anomalies detected
+                No obvious structural penalties triggered
               </span>
             )}
           </div>
@@ -305,11 +300,14 @@ Disclaimer: ${disclaimer}`;
               })}
             </div>
           ) : (
-            <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-800/40 text-emerald-300 text-sm flex items-center space-x-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-              <span>
-                Clean structure: URL passed all tested phishing heuristic rules without triggering risk penalties.
-              </span>
+            <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 text-slate-300 text-xs sm:text-sm flex items-start space-x-2.5">
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+              <div>
+                <strong className="text-white">Clean Structural Syntax:</strong>
+                <p className="text-slate-400 mt-0.5 leading-relaxed">
+                  This URL did not trigger our rule penalties. However, remember that zero triggered rules does NOT guarantee that the website is safe. Phishers frequently host attacks on newly registered domains or legitimate cloud infrastructure with clean syntax.
+                </p>
+              </div>
             </div>
           )}
         </div>
@@ -349,54 +347,54 @@ Disclaimer: ${disclaimer}`;
         <div>
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
             <FileText className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Parsed URL Architecture (urllib.parse.urlsplit)</span>
+            <span>Parsed URL Architecture (Python urllib.parse.urlsplit)</span>
           </h4>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
             <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Scheme</span>
+              <span className="text-[10px] font-mono uppercase text-slate-500 block">Scheme</span>
               <span className="text-xs font-mono font-bold text-cyan-300 truncate block mt-0.5">
                 {components.scheme || 'none'}
               </span>
             </div>
 
             <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 col-span-2">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Hostname</span>
+              <span className="text-[10px] font-mono uppercase text-slate-500 block">Hostname</span>
               <span className="text-xs font-mono font-bold text-white truncate block mt-0.5">
                 {components.hostname || 'none'}
               </span>
             </div>
 
             <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Port</span>
+              <span className="text-[10px] font-mono uppercase text-slate-500 block">Port</span>
               <span className="text-xs font-mono font-bold text-slate-300 truncate block mt-0.5">
                 {components.port || 'default'}
               </span>
             </div>
 
             <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Total Length</span>
+              <span className="text-[10px] font-mono uppercase text-slate-500 block">Total Length</span>
               <span className="text-xs font-mono font-bold text-slate-300 truncate block mt-0.5">
                 {features.total_length} chars
               </span>
             </div>
 
             <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Subdomains</span>
+              <span className="text-[10px] font-mono uppercase text-slate-500 block">Subdomains</span>
               <span className="text-xs font-mono font-bold text-slate-300 truncate block mt-0.5">
                 {features.subdomain_count} count
               </span>
             </div>
 
             <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 col-span-2 sm:col-span-3">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Path</span>
+              <span className="text-[10px] font-mono uppercase text-slate-500 block">Path</span>
               <span className="text-xs font-mono text-slate-300 truncate block mt-0.5">
                 {components.path || '/'}
               </span>
             </div>
 
             <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 col-span-2 sm:col-span-3">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Query String</span>
+              <span className="text-[10px] font-mono uppercase text-slate-500 block">Query String</span>
               <span className="text-xs font-mono text-slate-300 truncate block mt-0.5">
                 {components.query ? `?${components.query}` : '(none)'}
               </span>
@@ -404,12 +402,18 @@ Disclaimer: ${disclaimer}`;
           </div>
         </div>
 
-        {/* Disclaimer Notice */}
-        <div className="pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-start space-x-2">
-          <HelpCircle className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-          <p className="leading-relaxed">
-            <strong className="text-slate-400">Important Disclaimer:</strong> {disclaimer}
-          </p>
+        {/* Safety Boundary Notice Banner */}
+        <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-400 space-y-1.5">
+          <div className="flex items-center space-x-1.5 text-cyan-300 font-bold uppercase tracking-wider text-[11px]">
+            <Scale className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Understanding Safety Boundaries & Estimated Risk</span>
+          </div>
+          <ul className="list-disc list-inside space-y-1 text-slate-400 leading-relaxed">
+            <li><strong>HTTPS does not guarantee legitimacy:</strong> Free SSL certificates allow phishing sites to present encrypted locks.</li>
+            <li><strong>Keywords alone do not prove phishing:</strong> Authentic portals regularly use terms like /login and /account.</li>
+            <li><strong>Legitimate sites can trigger warnings (False Positives):</strong> Internal intranet nodes or complex cloud apps may score points.</li>
+            <li><strong>Air-Gapped:</strong> The server never contacts the remote host or renders website HTML.</li>
+          </ul>
         </div>
       </div>
     </div>
